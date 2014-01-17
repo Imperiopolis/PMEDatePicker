@@ -13,6 +13,7 @@
 @property (nonatomic, assign) NSInteger hourComponent;
 @property (nonatomic, assign) NSInteger minuteComponent;
 @property (nonatomic, assign) NSInteger ampmComponent;
+@property (nonatomic, assign) NSInteger numberOfDays;
 @property (nonatomic, strong) NSArray* shortMonthNames;
 @property (nonatomic, strong) NSArray* ampmSymbols;
 @property (nonatomic, strong) NSArray* uniqueSymbols;
@@ -52,6 +53,7 @@ static const NSCalendarUnit PMEPickerViewComponents = NSCalendarUnitDay | NSCale
     self.minimumDate = [NSDate distantPast];
     self.maximumDate = [NSDate distantFuture];
     self.date = [NSDate date];
+    [self updateNumberOfDays];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshCurrentLocale) name:NSCurrentLocaleDidChangeNotification object:nil];
 }
 
@@ -78,7 +80,7 @@ static const NSCalendarUnit PMEPickerViewComponents = NSCalendarUnitDay | NSCale
 
 - (NSInteger)realNumberOfRowsInComponent:(NSInteger)component {
     if (component == self.dayComponent) {
-        return 31;
+        return self.numberOfDays;
     } else if (component == self.monthComponent) {
         return 12;
     } else if (component == self.yearComponent) {
@@ -93,6 +95,67 @@ static const NSCalendarUnit PMEPickerViewComponents = NSCalendarUnitDay | NSCale
         return 2;
     }
     return 0;
+}
+
+- (void)updateNumberOfDays
+{
+    NSDateComponents *currentSelectedDateComponents = [[NSCalendar currentCalendar] components:PMEPickerViewComponents
+                                                                                      fromDate:self.date];
+
+    switch (currentSelectedDateComponents.month)
+    {
+        case 1:
+            self.numberOfDays = 31;
+            break;
+        case 2:
+            if(self.yearComponent == NSNotFound ||
+               currentSelectedDateComponents.year < 1900 ||
+               currentSelectedDateComponents.year > [[[NSCalendar currentCalendar] components:NSYearCalendarUnit
+                                                                                                                                                                      fromDate:[NSDate date]] year])
+            {
+                // Year is disabled, assume leap year so user has access to day 29
+
+                self.numberOfDays = 29;
+            } else {
+                // Year is enabled, determine whether year is leap year
+
+                self.numberOfDays = [self isLeapYear:currentSelectedDateComponents.year] ? 29 : 28;
+            }
+            break;
+        case 3:
+            self.numberOfDays = 31;
+            break;
+        case 4:
+            self.numberOfDays = 30;
+            break;
+        case 5:
+            self.numberOfDays = 31;
+            break;
+        case 6:
+            self.numberOfDays = 30;
+            break;
+        case 7:
+            self.numberOfDays = 31;
+            break;
+        case 8:
+            self.numberOfDays = 31;
+            break;
+        case 9:
+            self.numberOfDays = 30;
+            break;
+        case 10:
+            self.numberOfDays = 31;
+            break;
+        case 11:
+            self.numberOfDays = 30;
+            break;
+        case 12:
+            self.numberOfDays = 31;
+            break;
+        default:
+            self.numberOfDays = 31;
+            break;
+    }
 }
 
 - (NSInteger)rowForYear:(NSInteger)year {
@@ -118,6 +181,18 @@ static const NSCalendarUnit PMEPickerViewComponents = NSCalendarUnitDay | NSCale
     self.ampmSymbols = nil;
     self.dateFormatTemplate = self.dateFormatTemplate;
     [self.dateDelegate datePicker:self didSelectDate:self.date];
+}
+
+- (BOOL)isLeapYear:(NSInteger)year
+{
+    if (year % 4 != 0)
+        return NO;
+    else if (year % 400 == 0)
+        return YES;
+    else if (year % 100 == 0)
+        return NO;
+    else
+        return YES;
 }
 
 #pragma mark - getter & setter
@@ -306,6 +381,8 @@ static const NSCalendarUnit PMEPickerViewComponents = NSCalendarUnitDay | NSCale
     [self selectRow:row inComponent:component animated:NO];
     [self setDate:date animated:YES];
     [self.dateDelegate datePicker:self didSelectDate:date];
+    [self updateNumberOfDays];
+    [self updatePicker];
 }
 
 @end
