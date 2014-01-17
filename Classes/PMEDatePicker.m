@@ -63,6 +63,8 @@ static const NSCalendarUnit PMEPickerViewComponents = NSCalendarUnitDay | NSCale
         NSInteger numberOfRows = [self realNumberOfRowsInComponent:component];
         middleBlockIndex = ((NSInteger)((PMEPickerViewMaxNumberOfRows / 2) / numberOfRows)) * numberOfRows;
     }
+    if(row < 0)
+        row = 0;
     [super selectRow:middleBlockIndex + row inComponent:component animated:animated];
 }
 
