@@ -208,6 +208,9 @@ static const NSCalendarUnit PMEPickerViewComponents = NSCalendarUnitDay | NSCale
     }
     if (self.yearComponent != NSNotFound) {
         [components setYear:[self yearForRow:[self realSelectedRowInComponent:self.yearComponent]]];
+    } else {
+        // Return a leap year so Feb 29 is accepted as valid when no year is utilized
+        [components setYear:2004];
     }
     if (self.hourComponent != NSNotFound) {
         NSInteger offset = !self.is24HourMode && ([self realSelectedRowInComponent:self.ampmComponent] == 1) ? 12 : 0;
