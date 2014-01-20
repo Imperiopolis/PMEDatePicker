@@ -52,6 +52,7 @@ static const NSCalendarUnit PMEPickerViewComponents = NSCalendarUnitDay | NSCale
     self.dateFormatTemplate = @"yyyyMMMdjmm";
     self.minimumDate = [NSDate distantPast];
     self.maximumDate = [NSDate distantFuture];
+    self.numberOfDays = 31; // default to ensure no divide by zero error when setting self.date before updateNumberOfDays
     self.date = [NSDate date];
     [self updateNumberOfDays];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshCurrentLocale) name:NSCurrentLocaleDidChangeNotification object:nil];
