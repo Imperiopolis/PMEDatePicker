@@ -95,7 +95,7 @@ static const NSCalendarUnit PMEPickerViewComponents = NSCalendarUnitDay | NSCale
     } else if (component == self.ampmComponent) {
         return 2;
     }
-    return 0;
+    return -1;
 }
 
 - (void)updateNumberOfDays
