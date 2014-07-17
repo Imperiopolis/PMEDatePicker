@@ -6,12 +6,9 @@
 
 @class PMEDatePicker;
 
-@protocol PMEDatePickerDelegate <NSObject>
+typedef void (^PMEDatePickerHandler)(NSDate *date);
 
-- (void)datePicker:(PMEDatePicker*)datePicker didSelectDate:(NSDate*)date;
-
-@end
-
+@protocol PMEDatePickerDelegate;
 
 @interface PMEDatePicker : UIPickerView
 
@@ -23,7 +20,14 @@
 @property (nonatomic, copy) NSString* dateFormatTemplate;
 //! Use this delegate instead of inherited delegate and dataSource properties
 @property (nonatomic, weak) IBOutlet id<PMEDatePickerDelegate> dateDelegate;
+@property PMEDatePickerHandler handler;
 
 - (void)setDate:(NSDate*)date animated:(BOOL)animated;
+
+@end
+
+@protocol PMEDatePickerDelegate <NSObject>
+
+- (void)datePicker:(PMEDatePicker*)datePicker didSelectDate:(NSDate*)date;
 
 @end

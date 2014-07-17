@@ -181,7 +181,7 @@ static const NSCalendarUnit PMEPickerViewComponents = NSCalendarUnitDay | NSCale
     self.shortMonthNames = nil;
     self.ampmSymbols = nil;
     self.dateFormatTemplate = self.dateFormatTemplate;
-    [self.dateDelegate datePicker:self didSelectDate:self.date];
+    [self didSelectDate];
 }
 
 - (BOOL)isLeapYear:(NSInteger)year
@@ -384,9 +384,19 @@ static const NSCalendarUnit PMEPickerViewComponents = NSCalendarUnitDay | NSCale
     }
     [self selectRow:row inComponent:component animated:NO];
     [self setDate:date animated:YES];
-    [self.dateDelegate datePicker:self didSelectDate:date];
+    [self didSelectDate];
     [self updateNumberOfDays];
     [self updatePicker];
+}
+
+- (void)didSelectDate
+{
+    [self.dateDelegate datePicker:self didSelectDate:self.date];
+
+    if (self.handler)
+    {
+        self.handler(self.date);
+    }
 }
 
 @end
