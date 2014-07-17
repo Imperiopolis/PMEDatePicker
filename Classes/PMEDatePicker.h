@@ -22,7 +22,7 @@ typedef void (^PMEDatePickerHandler)(NSDate *date);
 @property (nonatomic, copy) NSString* dateFormatTemplate;
 //! Use this delegate instead of inherited delegate and dataSource properties
 @property (nonatomic, weak) IBOutlet id<PMEDatePickerDelegate> dateDelegate;
-@property PMEDatePickerHandler handler;
+@property (strong) PMEDatePickerHandler handler;
 
 - (void)setDate:(NSDate*)date animated:(BOOL)animated;
 

@@ -397,6 +397,9 @@ static const NSCalendarUnit PMEPickerViewComponents = NSCalendarUnitDay | NSCale
     if ([date timeIntervalSince1970] > [self.maximumDate timeIntervalSince1970]) {
         date = self.maximumDate;
     }
+    if ([date timeIntervalSince1970] < [self.minimumDate timeIntervalSince1970]) {
+        date = self.minimumDate;
+    }
     [self selectRow:row inComponent:component animated:NO];
     [self setDate:date animated:YES];
     [self didSelectDate];
