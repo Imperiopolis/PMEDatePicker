@@ -54,6 +54,8 @@ static const NSCalendarUnit PMEPickerViewComponents = NSCalendarUnitDay | NSCale
     self.maximumDate = [NSDate distantFuture];
     self.numberOfDays = 31; // default to ensure no divide by zero error when setting self.date before updateNumberOfDays
     self.date = [NSDate date];
+    self.textColor = [UIColor blackColor];
+    self.textFont = [UIFont systemFontOfSize:20];
     [self updateNumberOfDays];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshCurrentLocale) name:NSCurrentLocaleDidChangeNotification object:nil];
 }
@@ -262,6 +264,18 @@ static const NSCalendarUnit PMEPickerViewComponents = NSCalendarUnitDay | NSCale
     [self updatePicker];
 }
 
+- (void)setTextColor:(UIColor *)textColor
+{
+    _textColor = textColor;
+    [self updatePicker];
+}
+
+- (void)setTextFont:(UIFont *)textFont
+{
+    _textFont = textFont;
+    [self updatePicker];
+}
+
 - (NSArray *)shortMonthNames {
     if (!_shortMonthNames) {
         _shortMonthNames = [self.dateFormatter shortMonthSymbols];
@@ -351,11 +365,12 @@ static const NSCalendarUnit PMEPickerViewComponents = NSCalendarUnitDay | NSCale
     UILabel* label = (UILabel*)view;
     if (!label) {
         label = [UILabel new];
-        label.font = [UIFont systemFontOfSize:20.];
         label.textAlignment = NSTextAlignmentCenter;
     }
+    label.textColor = self.textColor;
+    label.font = self.textFont;
     label.text = [self pickerView:pickerView titleForRow:row forComponent:component];
-    
+
     return label;
 }
 

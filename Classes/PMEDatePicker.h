@@ -12,10 +12,12 @@ typedef void (^PMEDatePickerHandler)(NSDate *date);
 
 @interface PMEDatePicker : UIPickerView
 
-@property (nonatomic, retain) NSDate* date;
-@property (nonatomic, retain) NSDate* maximumDate;
-@property (nonatomic, retain) NSDate* minimumDate;
+@property (nonatomic, strong) NSDate* date;
+@property (nonatomic, strong) NSDate* maximumDate;
+@property (nonatomic, strong) NSDate* minimumDate;
 @property (nonatomic, strong, readonly) NSDateFormatter* dateFormatter;
+@property (nonatomic) UIColor *textColor;
+@property (nonatomic) UIFont *textFont;
 //! Supported date symbols are yyyy, MMM, d, HH, h, mm, j, a. Default is 'yyyyMMMdjmm'. Order is determined by locale.
 @property (nonatomic, copy) NSString* dateFormatTemplate;
 //! Use this delegate instead of inherited delegate and dataSource properties
