@@ -255,24 +255,22 @@ static const NSCalendarUnit PMEPickerViewComponents = NSCalendarUnitDay | NSCale
 }
 
 - (void)setMaximumDate:(NSDate *)maximumDate {
-    _maximumDate = maximumDate;
+    _maximumDate = maximumDate ? maximumDate : [NSDate distantFuture];
     [self updatePicker];
 }
 
 - (void)setMinimumDate:(NSDate *)minimumDate {
-    _minimumDate = minimumDate;
+    _minimumDate = minimumDate ? minimumDate : [NSDate distantPast];
     [self updatePicker];
 }
 
-- (void)setTextColor:(UIColor *)textColor
-{
-    _textColor = textColor;
+- (void)setTextColor:(UIColor *)textColor {
+    _textColor = textColor ? textColor : [UIColor blackColor];
     [self updatePicker];
 }
 
-- (void)setTextFont:(UIFont *)textFont
-{
-    _textFont = textFont;
+- (void)setTextFont:(UIFont *)textFont {
+    _textFont = textFont ? textFont : [UIFont systemFontOfSize:20];
     [self updatePicker];
 }
 
