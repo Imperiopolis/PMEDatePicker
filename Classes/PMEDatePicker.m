@@ -226,6 +226,37 @@ static const NSCalendarUnit PMEPickerViewComponents = NSCalendarUnitDay | NSCale
     return [components date];
 }
 
+- (NSDate *)referenceDate
+{
+    NSDateComponents *dateComponents = [NSDateComponents new];
+    [dateComponents setCalendar:[NSCalendar currentCalendar]];
+
+    if (self.yearComponent == NSNotFound)
+    {
+        [dateComponents setYear:2004];
+    }
+
+    return [dateComponents date];
+}
+
+- (void)setSeconds:(NSTimeInterval)seconds
+{
+    NSDateComponents *dateComponents = [NSDateComponents new];
+    [dateComponents setCalendar:[NSCalendar currentCalendar]];
+
+    if (self.yearComponent == NSNotFound)
+    {
+        [dateComponents setYear:2004];
+    }
+
+    [self setDate:[NSDate dateWithTimeInterval:seconds sinceDate:self.referenceDate] animated:YES];
+}
+
+- (NSTimeInterval)seconds
+{
+    return [self.date timeIntervalSinceDate:self.referenceDate];
+}
+
 - (void)setDate:(NSDate *)date {
     [self setDate:date animated:NO];
 }
@@ -411,7 +442,7 @@ static const NSCalendarUnit PMEPickerViewComponents = NSCalendarUnitDay | NSCale
 
     if (self.handler)
     {
-        self.handler(self.date);
+        self.handler(self.date, self.seconds);
     }
 }
 

@@ -6,13 +6,15 @@
 
 @class PMEDatePicker;
 
-typedef void (^PMEDatePickerHandler)(NSDate *date);
+typedef void (^PMEDatePickerHandler)(NSDate *date, NSTimeInterval seconds);
 
 @protocol PMEDatePickerDelegate;
 
 @interface PMEDatePicker : UIPickerView
 
 @property (nonatomic, strong) NSDate* date;
+@property (nonatomic) NSTimeInterval seconds;
+@property (readonly, nonatomic) NSDate *referenceDate;
 @property (nonatomic, strong) NSDate* maximumDate;
 @property (nonatomic, strong) NSDate* minimumDate;
 @property (nonatomic, strong, readonly) NSDateFormatter* dateFormatter;
